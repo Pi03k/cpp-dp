@@ -38,4 +38,7 @@ namespace Drawing
         void draw() const override;
     };
 }
+
+//bool is_registered = SingletonShapeFactory::instance().register_creator(Rectangle::id, &make_unique<Rectangle>);
+
 #endif // RECTANGLE_HPP

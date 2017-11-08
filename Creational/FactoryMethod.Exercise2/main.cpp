@@ -14,6 +14,24 @@ using namespace std;
 using namespace Drawing;
 using namespace Drawing::IO;
 
+namespace Testable
+{
+    class X
+    {
+        ShapeFactory* sf;
+
+        void use()
+        {
+            sf = get_factory();
+        }
+    protected:
+        virtual ShapeFactory* get_factory()
+        {
+            return &SingletonShapeFactory::instance();
+        }
+    };
+}
+
 class GraphicsDoc
 {
     vector<unique_ptr<Shape> > shapes_;
@@ -57,7 +75,7 @@ public:
 
             cout << "Loading " << shape_id << "..." << endl;
 
-            auto shape = shape_factory_.create(shape_id);
+            auto shape = SingletonShapeFactory::instance().create(shape_id);
             auto shape_rw = shape_rw_factory_.create(make_type_index(*shape));
 
             shape_rw->read(*shape, file_in);
