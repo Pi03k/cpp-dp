@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <string>
+#include <memory>
+
+class HRInfo;
 
 class Employee
 {
@@ -17,6 +20,7 @@ public:
 	Employee(const std::string& name);
     virtual ~Employee() = default;
 
+    virtual std::unique_ptr<HRInfo> create_hrinfo() const;
 	virtual void description() const = 0;
 };
 
@@ -41,6 +45,7 @@ class Temp : public Employee
 public:
 	Temp(const std::string& name);
 
+    std::unique_ptr<HRInfo> create_hrinfo() const override;
     void description() const override;
 };
 
