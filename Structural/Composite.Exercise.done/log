@@ -1,0 +1,13 @@
+make: Entering directory '/home/user/workspace/cpp-dp-2017-11-08/Structural/Composite.Exercise/build'
+make[1]: Entering directory '/home/user/workspace/cpp-dp-2017-11-08/Structural/Composite.Exercise/build'
+make[2]: Entering directory '/home/user/workspace/cpp-dp-2017-11-08/Structural/Composite.Exercise/build'
+Scanning dependencies of target Composite.Exercise
+make[2]: Leaving directory '/home/user/workspace/cpp-dp-2017-11-08/Structural/Composite.Exercise/build'
+make[2]: Entering directory '/home/user/workspace/cpp-dp-2017-11-08/Structural/Composite.Exercise/build'
+[  7%] Building CXX object CMakeFiles/Composite.Exercise.dir/shape_group.cpp.o
+[ 15%] Building CXX object CMakeFiles/Composite.Exercise.dir/shape_readers_writers/shape_group_reader_writer.cpp.o
+[ 23%] Linking CXX executable Composite.Exercise
+make[2]: Leaving directory '/home/user/workspace/cpp-dp-2017-11-08/Structural/Composite.Exercise/build'
+[100%] Built target Composite.Exercise
+make[1]: Leaving directory '/home/user/workspace/cpp-dp-2017-11-08/Structural/Composite.Exercise/build'
+make: Leaving directory '/home/user/workspace/cpp-dp-2017-11-08/Structural/Composite.Exercise/build'
