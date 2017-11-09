@@ -6,6 +6,7 @@
 #include <typeindex>
 #include <unordered_map>
 #include <vector>
+#include <algorithm>
 
 #include "shape.hpp"
 #include "shape_factories.hpp"
@@ -16,7 +17,7 @@ using namespace Drawing::IO;
 
 class GraphicsDoc
 {
-    vector<unique_ptr<Shape> > shapes_;
+    vector<unique_ptr<Shape>> shapes_;
     ShapeFactory& shape_factory_;
     ShapeRWFactory& shape_rw_factory_;
 
@@ -24,6 +25,13 @@ public:
     GraphicsDoc(ShapeFactory& shape_factory, ShapeRWFactory& shape_rw_factory)
         : shape_factory_{ shape_factory }, shape_rw_factory_{ shape_rw_factory }
     {
+    }
+
+    GraphicsDoc(const GraphicsDoc& source) 
+        : shape_factory_{source.shape_factory_}, shape_rw_factory_{source.shape_rw_factory_}, shapes_(source.shapes_.size())
+    {    
+        for(const auto& s : source.shapes_)
+            shapes_.push_back(s->clone());
     }
 
     void add(unique_ptr<Shape> shp)
@@ -90,7 +98,7 @@ int main()
 
     doc.render();
 
-    GraphicsDoc doc2 = doc;
+    GraphicsDoc doc2 = doc; // copy of doc
 
     doc2.save("new_drawing.txt");
 }
