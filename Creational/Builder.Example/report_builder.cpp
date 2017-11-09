@@ -31,7 +31,7 @@ ReportBuilder& HtmlReportBuilder::add_row(const DataRow& data_row)
 
 ReportBuilder& HtmlReportBuilder::end_data()
 {
-    doc_.append("<table>\n");
+    doc_.append("</table>\n");
 
     return *this;
 }

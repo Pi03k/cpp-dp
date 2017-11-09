@@ -8,7 +8,8 @@ using namespace std;
 class DataParser
 {
 public:
-    explicit DataParser(ReportBuilder& report_builder) : report_builder_(report_builder)
+    explicit DataParser(ReportBuilder& report_builder)
+        : report_builder_(report_builder)
     {
     }
 
@@ -45,22 +46,33 @@ public:
 
 int main()
 {
-    HtmlReportBuilder html_builder;
+    // HtmlReportBuilder html_builder;
 
-    DataParser parser(html_builder);
-    parser.Parse("data.txt");
+    // DataParser parser(html_builder);
+    // parser.Parse("data.txt");
 
-    HtmlDocument doc = html_builder.get_report();
+    // HtmlDocument doc = html_builder.get_report();
 
-    cout << doc << endl;
+    //cout << doc << endl;
 
-    //	CsvReportBuilder csv_builder;
+    CsvReportBuilder csv_builder;
 
-    //	DataParser parser(csv_builder);
-    //    parser.Parse("../data.txt");
+    DataParser parser(csv_builder);
+    parser.Parse("../data.txt");
 
-    //	CsvDocument doc = csv_builder.get_report();
+    CsvDocument doc = csv_builder.get_report();
 
-    //	for(CsvDocument::const_iterator it = doc.begin(); it != doc.end(); ++it)
-    //		cout << *it << endl;
+    for (CsvDocument::const_iterator it = doc.begin(); it != doc.end(); ++it)
+        cout << *it << endl;
+
+    // 
+    HtmlReportBuilder my_builder;
+
+    my_builder.add_header("Title")
+        .begin_data()
+            .add_row({"1", "2", "3"})
+            .add_row({ "4", "5", "6"})
+        .end_data().add_footer("The END");
+
+    cout << "\n" << my_builder.get_report() << endl;
 }
