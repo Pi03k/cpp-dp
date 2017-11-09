@@ -10,6 +10,7 @@ class Engine
 public:
     virtual void start() = 0;
     virtual void stop() = 0;
+    virtual std::unique_ptr<Engine> clone() const = 0; // virtual copy ctor
     virtual ~Engine() = default;
     std::unique_ptr<Engine> clone() const
     {
@@ -46,7 +47,7 @@ public:
     }
 };
 
-class TDI : public Diesel
+class TDI : public CloneableEngine<TDI, Diesel>
 {
 public:
     virtual void start() override
