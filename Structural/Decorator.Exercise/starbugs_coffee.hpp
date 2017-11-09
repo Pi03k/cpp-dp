@@ -1,7 +1,9 @@
-#ifndef COFFEEHELL_HPP_
-#define COFFEEHELL_HPP_
+#ifndef STARBUGS_COFFEE_HPP_
+#define STARBUGS_COFFEE_HPP_
 
+#include <boost/utility/base_from_member.hpp>
 #include <iostream>
+#include <memory>
 #include <string>
 
 class Coffee
@@ -77,9 +79,77 @@ public:
     }
 };
 
-// TO DO: Dodatki: cena - Whipped: 2.5, Whisky: 6.0, ExtraEspresso: 4.0
+class CoffeeDecorator : public CoffeeBase
+{
+    std::unique_ptr<Coffee> coffee_;
 
-// TO DO: Utworzyć klasę CoffeeDecorator i klasy konkretnych dodatków.
-//        Utworzyć espresso udekorowane dodatkami, obliczyć cenę, wyświetlić opis i przygotować napój.
+public:
+    CoffeeDecorator(std::unique_ptr<Coffee> coffee, float price, std::string desc)
+        : CoffeeBase(price, desc), coffee_{move(coffee)}
+    {
+    }
 
-#endif /*COFFEEHELL_HPP_*/
+    float get_total_price() const override
+    {
+        return CoffeeBase::get_total_price() + coffee_->get_total_price();
+    }
+
+    std::string get_description() const override
+    {
+        return coffee_->get_description() + " + " + CoffeeBase::get_description();
+    }
+
+    void prepare() override
+    {
+        coffee_->prepare();
+    }
+};
+
+class WhippedCream : public CoffeeDecorator
+{
+public:
+    WhippedCream(std::unique_ptr<Coffee> coffee)
+        : CoffeeDecorator(move(coffee), 2.5, "Whipped Cream")
+    {
+    }
+
+    void prepare() override
+    {
+        CoffeeDecorator::prepare();
+        std::cout << "Adding a whipped cream..." << std::endl;
+    }
+};
+
+class Whisky : public CoffeeDecorator
+{
+public:
+    Whisky(std::unique_ptr<Coffee> coffee)
+        : CoffeeDecorator(move(coffee), 6.0, "Whisky")
+    {
+    }
+
+    void prepare() override
+    {
+        CoffeeDecorator::prepare();
+        std::cout << "Pouring 50cl of single malt..." << std::endl;
+    }
+};
+
+class ExtraEspresso
+    : public boost::base_from_member<Espresso>,
+      public CoffeeDecorator
+{
+public:
+    ExtraEspresso(std::unique_ptr<Coffee> coffee)
+        : CoffeeDecorator(std::move(coffee), member.get_total_price(), "Extra espresso")
+    {
+    }
+
+    void prepare() override
+    {
+        CoffeeDecorator::prepare();
+        member.prepare();
+    }
+};
+
+#endif /*STARBUGS_COFFEE_HPP_*/
