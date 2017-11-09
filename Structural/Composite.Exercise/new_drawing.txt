@@ -1,4 +1,3 @@
-ShapeGroup 3
 Rectangle [100,200] 10 20
 ShapeGroup 2
 Square [400,40] 100
