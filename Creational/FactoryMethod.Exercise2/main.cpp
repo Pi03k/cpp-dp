@@ -30,6 +30,19 @@ namespace Testable
             return &SingletonShapeFactory::instance();
         }
     };
+
+    using MockFactory = ShapeFactory;
+
+    class X4Test : public X
+    {
+        MockFactory mq;
+    public:
+        ShapeFactory* get_factory() override
+        {
+            return &mq;
+        }
+    };
+
 }
 
 class GraphicsDoc
