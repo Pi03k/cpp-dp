@@ -8,9 +8,13 @@
 
 namespace Drawing
 {
+    using ShapePtr = std::unique_ptr<Shape>;
+
     // TODO
     class ShapeGroup
     {
+    public:
+        
     };
 }
 
