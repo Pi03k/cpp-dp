@@ -10,6 +10,7 @@ namespace Game
     {
     public:
         virtual void action() = 0;
+        //virtual std::unique_ptr<Enemy> clone() const = 0;
         virtual ~Enemy() = default;
     };
 
