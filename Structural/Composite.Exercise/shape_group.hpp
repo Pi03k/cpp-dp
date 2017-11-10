@@ -40,7 +40,7 @@ namespace Drawing
         ShapeGroup(ShapeGroup&&) = default;
         ShapeGroup& operator=(ShapeGroup&&) = default;
 
-        void swap(ShapeGroup& other)
+        void swap(ShapeGroup& other) noexcept
         {
             shapes_.swap(other.shapes_);
         }
