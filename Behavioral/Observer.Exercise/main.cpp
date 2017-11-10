@@ -8,14 +8,23 @@ int main()
     Stock ibm("IBM", 245.0);
     Stock tpsa("TPSA", 95.0);
 
-    // rejestracja inwestorow zainteresowanych powiadomieniami o zmianach kursu spolek
-    // TODO:
+    std::shared_ptr<Investor> Kulczyk = std::make_shared<Investor>("Kulczyk");
+    {
+        std::shared_ptr<Investor> Dziedzic = std::make_shared<Investor>("Dziedzic");
 
-    // zmian kursow
-    misys.set_price(360.0);
-    ibm.set_price(210.0);
-    tpsa.set_price(45.0);
+        misys.attach(Kulczyk);
+        misys.attach(Dziedzic);
 
+        // zmian kursow
+        misys.set_price(360.0);
+        ibm.set_price(210.0);
+        tpsa.set_price(45.0);
+
+        misys.detach(Kulczyk);
+    }
+
+    cout << "\n\n";
+    
     misys.set_price(380.0);
     ibm.set_price(230.0);
     tpsa.set_price(15.0);

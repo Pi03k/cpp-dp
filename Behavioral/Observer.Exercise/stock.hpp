@@ -3,23 +3,54 @@
 
 #include <iostream>
 #include <string>
+#include <set>
+#include <memory>
+
+using EventArgs = std::string;
 
 class Observer
 {
 public:
-    virtual void update(/*...*/) = 0;
+    virtual void update(EventArgs info) = 0;
     virtual ~Observer()
     {
     }
 };
 
+using ObserverPtr = std::weak_ptr<Observer>;
+
+class Subject
+{
+    std::set<ObserverPtr, std::owner_less<ObserverPtr>> observers_;
+public:
+    void attach(ObserverPtr observer)
+    {
+        observers_.insert(observer);
+    }
+
+    void detach(ObserverPtr observer)
+    {
+        observers_.erase(observer);
+    }
+protected:
+    void notify(std::string info)
+    {
+        for (const auto & observer : observers_)
+        {
+            auto living_observer = observer.lock();
+            if (living_observer)
+                living_observer->update(info);
+        }
+    }
+};
+
 // Subject
-class Stock
+class Stock : public Subject
 {
 private:
     std::string symbol_;
     double price_;
-    // TODO - kontener przechowywujacy obserwatorow
+
 public:
     Stock(const std::string& symbol, double price) : symbol_(symbol), price_(price)
     {
@@ -35,15 +66,13 @@ public:
         return price_;
     }
 
-    // TODO: rejestracja obserwatora
-
-    // TODO: wyrejestrowanie obserwatora
-
     void set_price(double price)
     {
-        price_ = price;
-
-        // TODO: powiadomienie inwestorow o zmianie kursu...
+        if (price_ != price)
+        {
+            notify(std::to_string(price));
+            price_ = price;
+        }        
     }
 };
 
@@ -56,9 +85,9 @@ public:
     {
     }
 
-    void update(/*...*/) override
+    void update(std::string info)
     {
-        // TODO: implementacja
+        std::cout << name_ << " price changed to: " << info << std::endl;
     }
 };
 
