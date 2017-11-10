@@ -12,7 +12,7 @@ class Taxpayer
     boost::flyweight<std::string> first_name_;
     std::string last_name_;
 
-public:
+public:p
     Taxpayer(int id, const string& imie, const string& nazwisko)
         : id_(id), first_name_(imie), last_name_(nazwisko)
     {

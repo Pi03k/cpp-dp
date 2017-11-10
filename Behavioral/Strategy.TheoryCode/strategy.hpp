@@ -1,27 +1,33 @@
-#ifndef STRATEGY_HPP_
-#define STRATEGY_HPP_
+#ifndef formatter_HPP_
+#define formatter_HPP_
 
 #include <algorithm>
+#include <cctype>
 #include <cstring>
 #include <functional>
 #include <iostream>
 #include <memory>
-#include <cctype>
 #include <string>
 
 // "Strategy"
-class Formatter
+
+namespace Canonical
 {
-public:
-    virtual std::string format(const std::string& data) = 0;
-    virtual ~Formatter() = default;
-};
+    class Formatter
+    {
+    public:
+        virtual std::string format(const std::string& data) = 0;
+        virtual ~Formatter() = default;
+    };
+}
+
+using Formatter = std::function<std::string(const std::string&)>;
 
 // "ConcreteStrategyA"
-class UpperCaseFormatter : public Formatter
+class UpperCaseFormatter //: public Formatter
 {
 public:
-    std::string format(const std::string& data) override
+    std::string operator()(const std::string& data) 
     {
         std::string transformed_data{data};
 
@@ -32,10 +38,10 @@ public:
 };
 
 // "ConcreteStrategyB"
-class LowerCaseFormatter : public Formatter
+class LowerCaseFormatter //: public Formatter
 {
 public:
-    virtual std::string format(const std::string& data) override
+    virtual std::string operator()(const std::string& data)// override
     {
         std::string transformed_data{data};
 
@@ -46,10 +52,10 @@ public:
 };
 
 // "ConcreteStrategyC"
-class CapitalizeFormatter : public Formatter
+class CapitalizeFormatter //: public Formatter
 {
 public:
-    virtual std::string format(const std::string& data) override
+    virtual std::string operator()(const std::string& data) // override
     {
         std::string transformed_data{data};
 
@@ -67,22 +73,23 @@ public:
 // "Context"
 class DataContext
 {
-    std::shared_ptr<Formatter> strategy_;
+    Formatter formatter_;
     std::string data_ = "text";
 
 public:
-    DataContext(std::shared_ptr<Formatter> strategy) : strategy_{strategy}
+    DataContext(Formatter strategy)
+        : formatter_{strategy}
     {
     }
 
-    void reset_formatter(std::shared_ptr<Formatter> new_strategy)
+    void reset_formatter(Formatter new_formatter)
     {
-        strategy_ = new_strategy;
+        formatter_ = new_formatter;
     }
 
     void pretty_print()
     {
-        std::cout << "Data: " << strategy_->format(data_) << std::endl;
+        std::cout << "Data: " << formatter_(data_) << std::endl;
     }
 
     std::string data() const
@@ -96,4 +103,4 @@ public:
     }
 };
 
-#endif /*STRATEGY_HPP_*/
+#endif /*formatter_HPP_*/

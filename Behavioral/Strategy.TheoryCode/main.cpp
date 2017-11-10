@@ -2,13 +2,13 @@
 
 int main()
 {
-    DataContext data{std::make_shared<UpperCaseFormatter>()};
+    DataContext data{UpperCaseFormatter{}};
     data.pretty_print();
 
-    auto lcf = std::make_shared<LowerCaseFormatter>();
+    auto lcf = LowerCaseFormatter{};
     data.reset_formatter(lcf);
     data.pretty_print();
 
-    data.reset_formatter(std::make_shared<CapitalizeFormatter>());
+    data.reset_formatter(CapitalizeFormatter{});
     data.pretty_print();
 }
