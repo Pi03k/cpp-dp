@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <mutex>
 
 // "Subject"
 class Subject
@@ -50,7 +51,7 @@ class Proxy : public Subject
 {
     std::string data_;
     std::unique_ptr<RealSubject> real_subject_;
-
+    std::once_flag initialized_;
 public:
     Proxy(const std::string& data) : data_{data}, real_subject_{nullptr}
     {
@@ -59,11 +60,8 @@ public:
 
     void request()
     {
-        // lazy initialization'
-        if (!real_subject_)
-        {
-            real_subject_ = std::make_unique<RealSubject>(data_);
-        }
+        // lazy initialization' thread safe
+        std::call_once(initialized_, [this] { real_subject_ = std::make_unique<RealSubject>(data_); });        
 
         real_subject_->request();
     }
